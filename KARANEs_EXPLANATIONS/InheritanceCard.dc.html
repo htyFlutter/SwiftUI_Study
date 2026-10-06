@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap');
+    *{box-sizing:border-box}
+    body{margin:0;font-family:"Zen Kaku Gothic New",system-ui,sans-serif;background:#F7F1E3;color:#3B3026}
+    a{color:#B5851F}a:hover{color:#8A5A20}
+    .card{width:760px;min-height:1400px;background:#F7F1E3;padding:34px 36px 30px;display:flex;flex-direction:column;gap:16px}
+    .hd{display:flex;align-items:center;gap:20px;border-bottom:3px solid #5A4531;padding-bottom:18px}
+    .num{font-family:"Zen Maru Gothic",sans-serif;font-weight:900;font-size:58px;line-height:1;color:#C89B32;letter-spacing:-.02em}
+    .ttl{flex:1}
+    .ttl .jp{font-family:"Zen Maru Gothic",sans-serif;font-size:13px;color:#2E7D54;font-weight:700;letter-spacing:.08em}
+    .ttl h1{font-family:"Zen Maru Gothic",sans-serif;font-weight:900;font-size:32px;margin:2px 0 3px;color:#5A4531}
+    .ttl .en{font-size:13px;color:#8A7B68;font-weight:500}
+    .ribbon{flex:none}
+    .voice{display:flex;gap:11px;align-items:flex-start;background:#EAF3EC;border-left:4px solid #2E7D54;border-radius:0 10px 10px 0;padding:12px 16px;font-size:14px;line-height:1.7;color:#2C5A42}
+    .voice b{color:#2E7D54;font-weight:700}
+    .tatoe{background:#FFFDF7;border:1.5px dashed #C89B32;border-radius:12px;padding:13px 16px}
+    .tatoe .th{font-family:"Zen Maru Gothic",sans-serif;font-size:13px;color:#B5851F;font-weight:800;margin-bottom:8px}
+    .tatoe ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+    .tatoe li{font-size:13.5px;line-height:1.55;color:#6E5024}
+    .tatoe li b{color:#5A4531}
+    h2{font-family:"Zen Maru Gothic",sans-serif;font-size:15px;font-weight:800;color:#5A4531;margin:0 0 9px;display:flex;align-items:center;gap:8px}
+    h2::before{content:"";width:13px;height:13px;border-radius:4px;background:#C89B32;display:inline-block}
+    .pts{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+    .pts li{font-size:14px;line-height:1.55;padding-left:21px;position:relative}
+    .pts li::before{content:"\25C6";color:#C89B32;position:absolute;left:0;font-size:10px;top:4px}
+    code{font-family:"JetBrains Mono",monospace;background:#FBF0D3;color:#8A5A20;padding:1px 5px;border-radius:4px;font-size:12.5px}
+    .tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+    .tbl th{background:#5A4531;color:#F7F1E3;font-family:"Zen Maru Gothic",sans-serif;font-weight:700;text-align:left;padding:6px 12px;font-size:12px}
+    .tbl td{padding:6px 12px;border-bottom:1px solid #EAD9B8}
+    .tbl tr:last-child td{border-bottom:none}
+    .tbl .ar{color:#2E7D54;font-weight:800;text-align:center;width:26px}
+    .code{background:#43342A;border-radius:12px;padding:15px 18px;font-family:"JetBrains Mono",monospace;font-size:12px;line-height:1.75;color:#F3E7D2;overflow-x:auto;white-space:pre}
+    .code .k{color:#EBC86B}.code .s{color:#A7D8B8}.code .c{color:#B29A80;font-style:italic}.code .t{color:#E9B98A}
+    .trap{background:#FBF0D3;border:1.5px solid #E4C77A;border-radius:12px;padding:12px 16px;font-size:13px;line-height:1.6;color:#7A5A1E}
+    .trap b{color:#B5851F}
+    .ft{margin-top:auto;display:flex;gap:11px;align-items:flex-start;border-top:2px dashed #D8C08C;padding-top:14px;font-size:13.5px;line-height:1.6;color:#6E5540;font-style:italic}
+    .ft b{color:#5A4531;font-style:normal}
+  </style>
+</helmet>
+<div class="card">
+  <header class="hd">
+    <div class="num">12</div>
+    <div class="ttl">
+      <div class="jp">けいしょう</div>
+      <h1>Inheritance</h1>
+      <div class="en">継承 / override・super</div>
+    </div>
+    <svg class="ribbon" width="46" height="30" viewBox="0 0 46 30"><path d="M23 15 L5 3 Q2 1 2 5 L2 25 Q2 29 5 27 Z" fill="#2E7D54"></path><path d="M23 15 L41 3 Q44 1 44 5 L44 25 Q44 29 41 27 Z" fill="#2E7D54"></path><rect x="18" y="9" width="10" height="12" rx="3" fill="#1F5A3C"></rect></svg>
+  </header>
+
+  <div class="voice"><b>からね</b>&nbsp;継承＝親クラスの財産（プロパティ・メソッド）を子が丸ごと引き継ぐこと。<code>class Dog: Animal</code> ── Flutterの <code>extends StatelessWidget</code> そのものよ。</div>
+
+  <div class="tatoe">
+    <div class="th">🍩 たとえ話でいくよ</div>
+    <ul>
+      <li><b>: 親クラス</b> = 親の遺産を継ぐ👨‍👦。Dartの <code>extends</code>。</li>
+      <li><b>override</b> = 親のやり方を自分流に上書き✏️。Dartの <code>@override</code>。</li>
+      <li><b>super</b> = 親に「それやっといて」と頼む📞。Flutterの <code>super.key</code> がコレ。</li>
+    </ul>
+  </div>
+
+  <section>
+    <h2>キーポイント</h2>
+    <ul class="pts">
+      <li>Dartの <code>extends</code> → Swiftは <code>:</code>（コロン）1個。</li>
+      <li>子は書かなくても親の <code>name</code> や <code>init</code> を<b>タダで使える</b>。</li>
+      <li>親と同じ名前のメソッドを上書きするなら <code>override</code> 必須。</li>
+      <li><code>super.init()</code> は<b>自分の新プロパティを埋めてから</b>呼ぶ。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Flutter / Dart &rarr; Swift</h2>
+    <table class="tbl">
+      <tr><th>元</th><th class="ar"></th><th>Swift</th></tr>
+      <tr><td><code>class A extends B</code></td><td class="ar">&rarr;</td><td><code>class A: B</code></td></tr>
+      <tr><td><code>@override</code></td><td class="ar">&rarr;</td><td><code>override</code></td></tr>
+      <tr><td><code>super.key</code> / <code>super.build()</code></td><td class="ar">&rarr;</td><td><code>super.init()</code> / <code>super.speak()</code></td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>コード例</h2>
+    <div class="code"><span class="k">class</span> <span class="t">Animal</span> {
+    <span class="k">var</span> name: <span class="t">String</span>
+    <span class="k">init</span>(name: <span class="t">String</span>) { <span class="k">self</span>.name = name }
+    <span class="k">func</span> speak() { <span class="t">print</span>(<span class="s">"\(name)は鳴いた"</span>) }
+}
+<span class="k">class</span> <span class="t">Dog</span>: <span class="t">Animal</span> {        <span class="c">// Animalを継承</span>
+    <span class="k">override</span> <span class="k">func</span> speak() {
+        <span class="k">super</span>.speak()       <span class="c">// 親の処理も呼ぶ</span>
+        <span class="t">print</span>(<span class="s">"ワン！と鳴いた"</span>)
+    }
+}</div>
+  </section>
+
+  <div class="trap"><b>&#9888; 罠</b>&nbsp;&nbsp;継承できるのは <b><code>class</code> だけ</b>。<code>struct</code> と <code>enum</code> は継承不可（紙のプリントは遺産を継げない）。<code>override</code> 付け忘れもエラーになるから、上書きには必ず付けな。</div>
+
+  <footer class="ft"><svg class="ribbon" width="30" height="20" viewBox="0 0 46 30"><path d="M23 15 L5 3 Q2 1 2 5 L2 25 Q2 29 5 27 Z" fill="#2E7D54"></path><path d="M23 15 L41 3 Q44 1 44 5 L44 25 Q44 29 41 27 Z" fill="#2E7D54"></path><rect x="18" y="9" width="10" height="12" rx="3" fill="#1F5A3C"></rect></svg><div><b>からね:</b>&nbsp;継承はFlutter経験がまるごと効いたでしょ。<code>extends</code>→<code>:</code>、<code>@override</code>→<code>override</code>。知ってたも同然よ。</div></footer>
+</div>
+</x-dc>
+</body>
+</html>

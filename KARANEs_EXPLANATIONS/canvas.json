@@ -1,0 +1,24 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html",             "x": 0,    "y": 0,    "w": 760, "h": 1300 },
+    { "file": "Operators.dc.html",        "x": 880,  "y": 0,    "w": 760, "h": 1300 },
+    { "file": "Strings.dc.html",          "x": 1760, "y": 0,    "w": 760, "h": 1300 },
+    { "file": "Collections.dc.html",      "x": 0,    "y": 1440, "w": 760, "h": 1300 },
+    { "file": "ControlFlow.dc.html",      "x": 880,  "y": 1440, "w": 760, "h": 1300 },
+    { "file": "Functions.dc.html",        "x": 1760, "y": 1440, "w": 760, "h": 1300 },
+    { "file": "ClosuresCard.dc.html",     "x": 0,    "y": 2880, "w": 760, "h": 1400 },
+    { "file": "EnumerationsCard.dc.html", "x": 880,  "y": 2880, "w": 760, "h": 1400 },
+    { "file": "StructClassCard.dc.html",  "x": 1760, "y": 2880, "w": 760, "h": 1400 },
+    { "file": "PropertiesCard.dc.html",   "x": 0,    "y": 4420, "w": 760, "h": 1400 },
+    { "file": "MethodsCard.dc.html",      "x": 880,  "y": 4420, "w": 760, "h": 1400 },
+    { "file": "InheritanceCard.dc.html",  "x": 1760, "y": 4420, "w": 760, "h": 1400 },
+    { "file": "InitializationCard.dc.html","x": 0,   "y": 5960, "w": 760, "h": 1400 },
+    { "file": "OptionalChainingCard.dc.html","x": 880,"y": 5960,"w": 760, "h": 1400 },
+    { "file": "ErrorHandlingCard.dc.html","x": 1760, "y": 5960, "w": 760, "h": 1400 },
+    { "file": "ProtocolsCard.dc.html",    "x": 0,    "y": 7500, "w": 760, "h": 1400 }
+  ],
+  "annotations": [
+    { "id": "title-note", "x": 0, "y": -150, "w": 660, "text": "からね's Swift 復習カード ── The Swift Programming Language 攻略ログ\n29単元中、01〜16 制覇！ 左上から章順に読みなさい。07以降は赤点ギャルでも分かる、たとえ話つき仕様よ。" }
+  ],
+  "launch": { "view": "canvas" }
+}

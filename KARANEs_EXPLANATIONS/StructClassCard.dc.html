@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap');
+    *{box-sizing:border-box}
+    body{margin:0;font-family:"Zen Kaku Gothic New",system-ui,sans-serif;background:#F7F1E3;color:#3B3026}
+    a{color:#B5851F}a:hover{color:#8A5A20}
+    .card{width:760px;min-height:1400px;background:#F7F1E3;padding:34px 36px 30px;display:flex;flex-direction:column;gap:16px}
+    .hd{display:flex;align-items:center;gap:20px;border-bottom:3px solid #5A4531;padding-bottom:18px}
+    .num{font-family:"Zen Maru Gothic",sans-serif;font-weight:900;font-size:58px;line-height:1;color:#C89B32;letter-spacing:-.02em}
+    .ttl{flex:1}
+    .ttl .jp{font-family:"Zen Maru Gothic",sans-serif;font-size:13px;color:#2E7D54;font-weight:700;letter-spacing:.08em}
+    .ttl h1{font-family:"Zen Maru Gothic",sans-serif;font-weight:900;font-size:26px;margin:2px 0 3px;color:#5A4531}
+    .ttl .en{font-size:13px;color:#8A7B68;font-weight:500}
+    .ribbon{flex:none}
+    .voice{display:flex;gap:11px;align-items:flex-start;background:#EAF3EC;border-left:4px solid #2E7D54;border-radius:0 10px 10px 0;padding:12px 16px;font-size:14px;line-height:1.7;color:#2C5A42}
+    .voice b{color:#2E7D54;font-weight:700}
+    .tatoe{background:#FFFDF7;border:1.5px dashed #C89B32;border-radius:12px;padding:13px 16px}
+    .tatoe .th{font-family:"Zen Maru Gothic",sans-serif;font-size:13px;color:#B5851F;font-weight:800;margin-bottom:8px}
+    .tatoe ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+    .tatoe li{font-size:13.5px;line-height:1.55;color:#6E5024}
+    .tatoe li b{color:#5A4531}
+    h2{font-family:"Zen Maru Gothic",sans-serif;font-size:15px;font-weight:800;color:#5A4531;margin:0 0 9px;display:flex;align-items:center;gap:8px}
+    h2::before{content:"";width:13px;height:13px;border-radius:4px;background:#C89B32;display:inline-block}
+    .pts{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+    .pts li{font-size:14px;line-height:1.55;padding-left:21px;position:relative}
+    .pts li::before{content:"\25C6";color:#C89B32;position:absolute;left:0;font-size:10px;top:4px}
+    code{font-family:"JetBrains Mono",monospace;background:#FBF0D3;color:#8A5A20;padding:1px 5px;border-radius:4px;font-size:12.5px}
+    .tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+    .tbl th{background:#5A4531;color:#F7F1E3;font-family:"Zen Maru Gothic",sans-serif;font-weight:700;text-align:left;padding:6px 12px;font-size:12px}
+    .tbl td{padding:6px 12px;border-bottom:1px solid #EAD9B8}
+    .tbl tr:last-child td{border-bottom:none}
+    .tbl .ar{color:#2E7D54;font-weight:800;text-align:center;width:26px}
+    .code{background:#43342A;border-radius:12px;padding:15px 18px;font-family:"JetBrains Mono",monospace;font-size:12px;line-height:1.75;color:#F3E7D2;overflow-x:auto;white-space:pre}
+    .code .k{color:#EBC86B}.code .s{color:#A7D8B8}.code .c{color:#B29A80;font-style:italic}.code .t{color:#E9B98A}
+    .trap{background:#FBF0D3;border:1.5px solid #E4C77A;border-radius:12px;padding:12px 16px;font-size:13px;line-height:1.6;color:#7A5A1E}
+    .trap b{color:#B5851F}
+    .ft{margin-top:auto;display:flex;gap:11px;align-items:flex-start;border-top:2px dashed #D8C08C;padding-top:14px;font-size:13.5px;line-height:1.6;color:#6E5540;font-style:italic}
+    .ft b{color:#5A4531;font-style:normal}
+  </style>
+</helmet>
+<div class="card">
+  <header class="hd">
+    <div class="num">09</div>
+    <div class="ttl">
+      <div class="jp">あたい と さんしょう</div>
+      <h1>Structures &amp; Classes</h1>
+      <div class="en">struct(コピー) vs class(共有)</div>
+    </div>
+    <svg class="ribbon" width="46" height="30" viewBox="0 0 46 30"><path d="M23 15 L5 3 Q2 1 2 5 L2 25 Q2 29 5 27 Z" fill="#2E7D54"></path><path d="M23 15 L41 3 Q44 1 44 5 L44 25 Q44 29 41 27 Z" fill="#2E7D54"></path><rect x="18" y="9" width="10" height="12" rx="3" fill="#1F5A3C"></rect></svg>
+  </header>
+
+  <div class="voice"><b>からね</b>&nbsp;Swift最大の山。struct と class、見た目そっくりだけど「コピーされる」か「共有される」かが<b>真逆</b>。ここだけはガチで別世界よ。</div>
+
+  <div class="tatoe">
+    <div class="th">🍩 たとえ話でいくよ（超大事）</div>
+    <ul>
+      <li><b>struct</b> = 書類のコピー📄。<code>b = a</code> した瞬間コピーが刷られて別物。b に落書きしても a は<b>無傷</b>。</li>
+      <li><b>class</b> = 1枚の書類にみんなで矢印🔗。<code>b = a</code> は矢印のコピー。b いじると a も変わる（Flutterのアレ）。</li>
+    </ul>
+  </div>
+
+  <section>
+    <h2>キーポイント</h2>
+    <ul class="pts">
+      <li><b>struct</b> = 値型（コピーされる）← Swiftの<b>主役</b>。</li>
+      <li><b>class</b> = 参照型（共有される）← Dartと同じ。</li>
+      <li>struct は <code>init</code> 自動、class は自分で書く。</li>
+      <li><b>迷ったら struct</b>。どうしても共有したい時だけ class。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Dart &rarr; Swift</h2>
+    <table class="tbl">
+      <tr><th>Dart</th><th class="ar"></th><th>Swift</th></tr>
+      <tr><td>全部 class（参照型）</td><td class="ar">&rarr;</td><td><b>struct が基本</b>（値型）</td></tr>
+      <tr><td><code>b = a</code> は共有</td><td class="ar">&rarr;</td><td><code>b = a</code> はコピー（独立）</td></tr>
+      <tr><td><code>init</code> は手書き</td><td class="ar">&rarr;</td><td>struct は<b>自動生成</b></td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>コード例</h2>
+    <div class="code"><span class="k">struct</span> <span class="t">User</span> { <span class="k">var</span> name: <span class="t">String</span> }
+
+<span class="k">var</span> a = <span class="t">User</span>(name: <span class="s">"はやと"</span>)
+<span class="k">var</span> b = a              <span class="c">// ★ここでコピーされる</span>
+b.name = <span class="s">"太郎"</span>
+<span class="t">print</span>(a.name)          <span class="c">// はやと ← 無傷！</span>
+                        <span class="c">// (class なら a も "太郎" に変わる)</span></div>
+  </section>
+
+  <div class="trap"><b>&#9888; 罠</b>&nbsp;&nbsp;「別の変数に入れたら元のデータも勝手に変わってた」ってFlutterのバグ、あれ<b>参照型のせい</b>。struct はコピーされるから、その事故が構造的に起きないの。</div>
+
+  <footer class="ft"><svg class="ribbon" width="30" height="20" viewBox="0 0 46 30"><path d="M23 15 L5 3 Q2 1 2 5 L2 25 Q2 29 5 27 Z" fill="#2E7D54"></path><path d="M23 15 L41 3 Q44 1 44 5 L44 25 Q44 29 41 27 Z" fill="#2E7D54"></path><rect x="18" y="9" width="10" height="12" rx="3" fill="#1F5A3C"></rect></svg><div><b>からね:</b>&nbsp;struct で a が無傷だった時の "Whaaat!?"、忘れんな。教科書10回読むより、あの1回の驚きが一番効くのよ。</div></footer>
+</div>
+</x-dc>
+</body>
+</html>
