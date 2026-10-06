@@ -1,0 +1,23 @@
+# ---- macOS ----
+.DS_Store
+
+# ---- Xcode: ユーザー個人設定（他人と共有してはいけない） ----
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+*.xccheckout
+
+# ---- ビルド成果物 ----
+DerivedData/
+build/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# ---- Swift Package Manager ----
+.build/
+.swiftpm/xcode/package.xcworkspace/xcuserdata/
+
+# ---- 依存管理（使う時にコメント解除） ----
+# Pods/
+# Carthage/Build/
