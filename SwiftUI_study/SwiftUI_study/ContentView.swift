@@ -3,8 +3,11 @@ import Playgrounds
 
 struct ContentView: View {
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        VStack(alignment: .leading) {
+            Text("A").padding().foregroundStyle(.yellow)
+            Text("B").foregroundStyle(.yellow).padding()
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
