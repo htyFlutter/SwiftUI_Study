@@ -15,7 +15,7 @@ struct ContentView: View {
                     count += 1
                 }
                 Button("減らす") {
-                    count -= 1
+                    count = max(0, count - 1)
                 }
             }
             Button("リセットおおおおおおおおお") {
