@@ -14,13 +14,20 @@ struct ContentView: View {
                 Button("増やす") {
                     count += 1
                 }
+                .buttonStyle(.borderedProminent)
                 Button("減らす") {
                     count = max(0, count - 1)
                 }
+                .buttonStyle(.bordered)
+                .disabled(count == 0)
             }
             Button("リセットおおおおおおおおお") {
                 count = 0
             }
+            .buttonStyle(.borderedProminent)
+            .tint(.red)
+            .disabled(
+                count == 0)
         }
     }
 }
