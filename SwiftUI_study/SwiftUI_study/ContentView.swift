@@ -15,6 +15,7 @@ struct ContentView: View {
     
     @State private var newTodoTitle = ""
     @State private var selectTabs: Todotab = .all
+    private let saveKey = "saveTodos"
     
     var filteredTodos: [Binding<ToDo>] {
         $todos.filter { $todo in
@@ -67,6 +68,12 @@ struct ContentView: View {
                     .padding(.bottom, 16)
             }
             .navigationTitle("やることリスト")
+            .onAppear{
+                loadTodos()
+            }
+            .onChange(of: todos) {
+                saveTodos()
+            }
         }
     }
     
@@ -78,6 +85,19 @@ struct ContentView: View {
     
     private func deleteTab(at offsets: IndexSet) {
         todos.remove(atOffsets: offsets)
+    }
+    
+    private func saveTodos() {
+        if let encoded = try? JSONEncoder().encode(todos) {
+            UserDefaults.standard.set(encoded, forKey: saveKey)
+        }
+    }
+    
+    private func loadTodos() {
+        if let data = UserDefaults.standard.data(forKey: saveKey),
+            let decoded = try? JSONDecoder().decode([ToDo].self, from: data) {
+            todos = decoded
+        }
     }
     
 }
