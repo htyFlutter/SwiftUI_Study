@@ -95,7 +95,7 @@ struct ContentView: View {
     
     private func loadTodos() {
         if let data = UserDefaults.standard.data(forKey: saveKey),
-            let decoded = try? JSONDecoder().decode([ToDo].self, from: data) {
+            let decoded = try? JSONDecoder().decode([ToDo].self, from: data) z{
             todos = decoded
         }
     }

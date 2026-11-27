@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SwiftUI 国際空港（HND/NRT）UI編まとめ — フライトログ</title>
+  <style>
+    :root {
+      --sky-top: #0b1930;
+      --sky-mid: #132c52;
+      --accent-blue: #38bdf8;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --glass-bg: rgba(255, 255, 255, 0.88);
+      --glass-border: rgba(255, 255, 255, 0.45);
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --code-bg: #0f172a;
+      --card-shadow: 0 20px 45px rgba(11, 25, 48, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      background: linear-gradient(180deg, #e0f2fe 0%, #f1f5f9 35%, #f8fafc 100%);
+      color: var(--text-main);
+      line-height: 1.75;
+      padding-bottom: 100px;
+    }
+
+    /* Hero / Airport Departure Header */
+    .hero {
+      background: linear-gradient(135deg, var(--sky-top) 0%, var(--sky-mid) 60%, #1e40af 100%);
+      color: #ffffff;
+      padding: 48px 24px 64px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(11, 25, 48, 0.25);
+    }
+
+    .hero::after {
+      content: "✈️  HND ⇄ NRT  •  SWIFTUI INTERNATIONAL TERMINAL";
+      position: absolute;
+      bottom: 14px;
+      right: 24px;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      color: rgba(255, 255, 255, 0.45);
+      font-weight: 700;
+    }
+
+    .hero-inner {
+      max-width: 1060px;
+      margin: 0 auto;
+    }
+
+    .board-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(56, 189, 248, 0.16);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #7dd3fc;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-size: clamp(26px, 4vw, 40px);
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      color: #cbd5e1;
+      max-width: 760px;
+      font-size: 15px;
+    }
+
+    .karane-note {
+      margin-top: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 14px;
+      padding: 14px 18px;
+      font-size: 14px;
+      color: #f8fafc;
+    }
+
+    .karane-note strong {
+      color: #fde047;
+    }
+
+    /* Floating Liquid Glass Nav */
+    .floating-nav-wrap {
+      position: sticky;
+      top: 14px;
+      z-index: 40;
+      display: flex;
+      justify-content: center;
+      padding: 0 16px;
+      margin-top: -26px;
+    }
+
+    .floating-nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(18px) saturate(180%);
+      -webkit-backdrop-filter: blur(18px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.14);
+      padding: 8px 14px;
+      border-radius: 999px;
+    }
+
+    .floating-nav a {
+      text-decoration: none;
+      color: var(--text-main);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 999px;
+      transition: all 0.2s ease;
+    }
+
+    .floating-nav a:hover {
+      background: #0284c7;
+      color: #ffffff;
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1060px;
+      margin: 32px auto 0;
+      padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+    }
+
+    /* Flight Card */
+    .flight-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      box-shadow: var(--card-shadow);
+      overflow: hidden;
+      scroll-margin-top: 84px;
+    }
+
+    .flight-header {
+      background: linear-gradient(90deg, #0f172a 0%, #1e293b 100%);
+      color: #ffffff;
+      padding: 18px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .flight-title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .flight-num {
+      background: var(--accent-blue);
+      color: #0f172a;
+      font-weight: 900;
+      font-size: 13px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      letter-spacing: 0.05em;
+    }
+
+    .flight-header h2 {
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .git-pill {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 12px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: #93c5fd;
+      padding: 4px 10px;
+      border-radius: 8px;
+    }
+
+    .flight-body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    /* Visual Grid: Airport Illustration + App Screenshot */
+    .visual-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    .visual-grid.single-visual {
+      grid-template-columns: 1fr;
+    }
+
+    @media (max-width: 820px) {
+      .visual-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .media-box {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .media-label {
+      font-size: 12px;
+      font-weight: 800;
+      color: #0369a1;
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .media-box img {
+      width: 100%;
+      border-radius: 10px;
+      object-fit: cover;
+      cursor: zoom-in;
+      border: 1px solid #e2e8f0;
+      transition: transform 0.2s ease;
+    }
+
+    .media-box img:hover {
+      transform: scale(1.015);
+    }
+
+    .screen-row {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      height: 100%;
+    }
+
+    .screen-row img {
+      max-height: 310px;
+      width: auto;
+      max-width: 100%;
+      object-fit: contain;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+    }
+
+    /* Analogy Box */
+    .analogy-box {
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      border-left: 5px solid #0284c7;
+      border-radius: 14px;
+      padding: 16px 20px;
+    }
+
+    .analogy-box h3 {
+      font-size: 16px;
+      color: #0369a1;
+      margin-bottom: 6px;
+    }
+
+    .analogy-box p, .analogy-box li {
+      font-size: 14.5px;
+      color: #1e293b;
+    }
+
+    .analogy-box ul {
+      padding-left: 20px;
+      margin-top: 6px;
+    }
+
+    /* Two-column Info: Code + Flutter Bridge */
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 18px;
+    }
+
+    @media (max-width: 820px) {
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    pre {
+      background: var(--code-bg);
+      color: #e2e8f0;
+      padding: 16px;
+      border-radius: 14px;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 13px;
+      line-height: 1.55;
+      border: 1px solid #334155;
+    }
+
+    .side-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .bridge-box {
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 13.5px;
+    }
+
+    .bridge-box h4 {
+      color: #047857;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    .vocab-box {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 13.5px;
+    }
+
+    .vocab-box h4 {
+      color: #b45309;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    .vocab-box ul {
+      padding-left: 18px;
+    }
+
+    /* Bonus Columns */
+    .column-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 18px;
+    }
+
+    .mini-column {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 18px;
+    }
+
+    .mini-column h3 {
+      font-size: 16px;
+      color: #0f172a;
+      margin-bottom: 8px;
+    }
+
+    .mini-column p {
+      font-size: 14px;
+      color: #334155;
+    }
+
+    /* Image Zoom Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(6px);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      cursor: zoom-out;
+    }
+
+    .modal.open {
+      display: flex;
+    }
+
+    .modal img {
+      max-width: 94vw;
+      max-height: 90vh;
+      border-radius: 14px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 48px;
+      color: var(--text-muted);
+      font-size: 13.5px;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="board-badge">✈️ SWIFTUI INTERNATIONAL AIRPORT (HND / NRT) • UI編まとめ</div>
+      <h1>ToDoアプリ開発 フライトログ</h1>
+      <p>
+        Gitのコミット履歴（バージョン）ごとに、羽田・成田のような国際線空港に例えてSwiftUIのUI開発を完全整理！
+        空港イラストの英語ラベルは、東京駅での外国人道案内にもそのまま使える単語セットになってるわよ。
+      </p>
+      <div class="karane-note">
+        <strong>💬 からねより：</strong>
+        「間隔が空いて忘れちゃったらどうしよう…」なんて心配しなくていいわよ！
+        このフライトログを見返せば、基礎から<strong>Liquid Glass・画面遷移・データ永続化</strong>まで3秒で思い出せるわ。……べ、別にあんたのために張り切ってまとめたわけじゃないんだからね！
+      </div>
+    </div>
+  </header>
+
+  <div class="floating-nav-wrap">
+    <nav class="floating-nav">
+      <a href="#flight-01">01 ターミナル基礎</a>
+      <a href="#flight-02">02 @Stateゲート</a>
+      <a href="#flight-03">03 Liquid Glass</a>
+      <a href="#flight-04">04 @Binding連絡</a>
+      <a href="#flight-05">05 画面遷移</a>
+      <a href="#flight-06">06 永久保存</a>
+      <a href="#columns">空港コラム</a>
+    </nav>
+  </div>
+
+  <main class="container">
+
+    <!-- FLIGHT 01 -->
+    <section id="flight-01" class="flight-card">
+      <div class="flight-header">
+        <div class="flight-title-group">
+          <span class="flight-num">FLIGHT 01</span>
+          <h2>滑走路とターミナルの建設（Stackレイアウト基礎）</h2>
+        </div>
+        <span class="git-pill">commit: 11112a4 〜 4dae8ef</span>
+      </div>
+      <div class="flight-body">
+        <div class="visual-grid single-visual">
+          <div class="media-box">
+            <div class="media-label"><span>🖼️ 空港イメージ図（クリックで拡大）</span><span>HND / NRT Terminal Structure</span></div>
+            <img src="images/flight_01.jpg" alt="Flight 01 Airport Terminal Structure" onclick="openModal(this.src)" />
+          </div>
+        </div>
+
+        <div class="analogy-box">
+          <h3>✈️ 羽田・成田でのたとえ：空港の「縦・横・奥行き」の骨組み！</h3>
+          <ul>
+            <li><strong><code>VStack</code>（2F Departures / 1F Arrivals）</strong>：階ごとに<strong>縦</strong>に積み上げる構造！</li>
+            <li><strong><code>HStack</code>（Check-in Counters）</strong>：A・B・Cカウンターみたいに<strong>横</strong>に並べる構造！</li>
+            <li><strong><code>ZStack</code>（Layered Signage）</strong>：地図の上に案内板を重ねるみたいに<strong>手前と奥</strong>に重ねる構造！</li>
+          </ul>
+        </div>
+
+        <div class="info-grid">
+          <pre><code>VStack(spacing: 0) {
+    // 縦に並べる（入力エリア ＋ リスト）
+    HStack {
+        // 横に並べる（テキスト欄 ＋ 追加ボタン）
+        TextField("やることを入力...", text: $newTodoTitle)
+        Button("追加") { addTodo() }
+    }
+    List { ... }
+}</code></pre>
+          <div class="side-cards">
+            <div class="bridge-box">
+              <h4>🔄 Flutterとのブリッジ</h4>
+              <p><code>Column</code> ➡️ <code>VStack</code><br><code>Row</code> ➡️ <code>HStack</code><br><code>Stack</code> ➡️ <code>ZStack</code></p>
+            </div>
+            <div class="vocab-box">
+              <h4>🌏 東京駅・道案内英語</h4>
+              <ul>
+                <li><strong>Departures</strong>：出発ロビー</li>
+                <li><strong>Check-in counter</strong>：搭乗手続きカウンター</li>
+                <li><strong>Signage</strong>：案内標識</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FLIGHT 02 -->
+    <section id="flight-02" class="flight-card">
+      <div class="flight-header">
+        <div class="flight-title-group">
+          <span class="flight-num">FLIGHT 02</span>
+          <h2>搭乗人数カウンターと安全ゲート（@State ＆ .disabled）</h2>
+        </div>
+        <span class="git-pill">commit: e77892f 〜 d23d8a8</span>
+      </div>
+      <div class="flight-body">
+        <div class="visual-grid">
+          <div class="media-box">
+            <div class="media-label"><span>🖼️ 空港イメージ図</span><span>Live Counter & Safety Lock</span></div>
+            <img src="images/flight_02.jpg" alt="Flight 02 Live Board and Gate Lock" onclick="openModal(this.src)" />
+          </div>
+          <div class="media-box">
+            <div class="media-label"><span>📱 はやとの実機スクショ</span><span>0人ロックの挙動</span></div>
+            <div class="screen-row">
+              <img src="images/screen_02_counter_disabled.png" alt="Counter 0 disabled" onclick="openModal(this.src)" />
+              <img src="images/screen_02_counter_active.png" alt="Counter 1 active" onclick="openModal(this.src)" />
+            </div>
+          </div>
+        </div>
+
+        <div class="analogy-box">
+          <h3>✈️ 羽田・成田でのたとえ：連動する電光掲示板と自動ロックゲート！</h3>
+          <p>
+            <strong><code>@State</code></strong> は空港の<strong>「電光掲示板（Live Board）」</strong>。変数の数字が変わった瞬間に、それに繋がっている画面の見た目（赤文字・ボタンの色）が全自動で書き換わるの！
+            さらに <strong><code>.disabled(count == 0)</code></strong> は「乗客が0人の時は『減らす・リセット』のゲートを自動でロックして押せなくする安全装置」よ。
+          </p>
+        </div>
+
+        <div class="info-grid">
+          <pre><code>@State private var count = 0
+
+Text("カウント: \(count)")
+    .foregroundStyle(count == 0 ? .red : .primary)
+
+Button("減らす") {
+    count = max(0, count - 1)
+}
+.disabled(count == 0) // 👈 0の時はゲートロック！</code></pre>
+          <div class="side-cards">
+            <div class="bridge-box">
+              <h4>🔄 Flutterとのブリッジ</h4>
+              <p>わざわざ <code>setState(() { ... })</code> で囲まなくても、<code>@State</code> 変数を書き換えるだけで画面が自動で再描画される神仕様！</p>
+            </div>
+            <div class="vocab-box">
+              <h4>🌏 東京駅・道案内英語</h4>
+              <ul>
+                <li><strong>Boarding gate</strong>：搭乗口（改札口）</li>
+                <li><strong>Locked / Out of service</strong>：閉鎖中・利用停止</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FLIGHT 03 -->
+    <section id="flight-03" class="flight-card">
+      <div class="flight-header">
+        <div class="flight-title-group">
+          <span class="flight-num">FLIGHT 03</span>
+          <h2>パスポートIDとLiquid Glass展望バー（ToDo ＋ .glassEffect）</h2>
+        </div>
+        <span class="git-pill">commit: 10f372a</span>
+      </div>
+      <div class="flight-body">
+        <div class="visual-grid">
+          <div class="media-box">
+            <div class="media-label"><span>🖼️ 空港イメージ図</span><span>Passport ID & Liquid Glass Lounge</span></div>
+            <img src="images/flight_03.jpg" alt="Flight 03 Passport and Liquid Glass" onclick="openModal(this.src)" />
+          </div>
+          <div class="media-box">
+            <div class="media-label"><span>📱 はやとの実機スクショ</span><span>こだわりのガラスバー！</span></div>
+            <div class="screen-row">
+              <img src="images/screen_03_liquid_glass.png" alt="Liquid Glass Bottom Bar" onclick="openModal(this.src)" />
+            </div>
+          </div>
+        </div>
+
+        <div class="analogy-box">
+          <h3>✈️ 羽田・成田でのたとえ：重複しないパスポート番号 ＆ ガラス張り展望バー！</h3>
+          <p>
+            <strong><code>ToDo: Identifiable</code>（<code>UUID</code>）</strong> は乗客1人ひとりの<strong>「パスポート番号」</strong>。これがあるから入国審査（<code>ForEach</code>）で誰が誰だか見分けられて、スワイプ削除も正確に動く！
+            そしてはやとが見つけた最新API <strong><code>.glassEffect(.regular, in: Capsule())</code></strong> で、空港の展望デッキみたいなぷかぷか浮く液体ガラスバーが誕生したわ！
+          </p>
+        </div>
+
+        <div class="info-grid">
+          <pre><code>struct ToDo: Identifiable {
+    let id = UUID() // 👈 重複しないパスポート番号！
+    var title: String
+    var isCompleted: Bool = false
+}
+
+// 最新のLiquid Glass効果！
+.padding(.horizontal, 20)
+.padding(.vertical, 14)
+.glassEffect(.regular, in: Capsule())
+.shadow(color: .black.opacity(0.12), radius: 10, y: 5)</code></pre>
+          <div class="side-cards">
+            <div class="bridge-box">
+              <h4>🔄 Flutterとのブリッジ</h4>
+              <p>Flutterだと <code>BackdropFilter</code> ＋ <code>ImageFilter.blur</code> で苦労するところを、SwiftUIならOS標準の <code>.glassEffect</code> 1行でリアルな屈折ガラスに！</p>
+            </div>
+            <div class="vocab-box">
+              <h4>🌏 東京駅・道案内英語</h4>
+              <ul>
+                <li><strong>Passport control</strong>：出入国審査</li>
+                <li><strong>Observation deck</strong>：展望デッキ</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FLIGHT 04 -->
+    <section id="flight-04" class="flight-card">
+      <div class="flight-header">
+        <div class="flight-title-group">
+          <span class="flight-num">FLIGHT 04</span>
+          <h2>第2ターミナル独立と連絡シャトル（部品化 ＆ @Binding）</h2>
+        </div>
+        <span class="git-pill">commit: afb9f4e</span>
+      </div>
+      <div class="flight-body">
+        <div class="visual-grid">
+          <div class="media-box">
+            <div class="media-label"><span>🖼️ 空港イメージ図</span><span>Terminal 1 ⇄ Terminal 2 Shuttle</span></div>
+            <img src="images/flight_04.jpg" alt="Flight 04 Terminal Shuttle" onclick="openModal(this.src)" />
+          </div>
+          <div class="media-box">
+            <div class="media-label"><span>📱 はやとの実機スクショ</span><span>部品分割後も完璧に連動！</span></div>
+            <div class="screen-row">
+              <img src="images/screen_04_component.png" alt="Separated LiquidGlassBar component" onclick="openModal(this.src)" />
+            </div>
+          </div>
+        </div>
+
+        <div class="analogy-box">
+          <h3>✈️ 羽田・成田でのたとえ：本館（第1）と別棟（第2）を繋ぐ地下シャトル！</h3>
+          <p>
+            1つのファイルに全部詰め込むと巨大すぎて迷子になるから、すりガラスバーを<strong>「第2ターミナル（<code>LiquidGlassBar.swift</code>）」</strong>として別ファイルに独立させたわ！
+            そして本館（<code>ContentView</code>）の <code>@State</code> と別棟の <strong><code>@Binding</code></strong> を <strong><code>$</code>（ドルマーク）</strong> で繋ぐことで、乗客やデータが双方向に往き来できる連絡シャトルが開通したの！
+          </p>
+        </div>
+
+        <div class="info-grid">
+          <pre><code>// 本館（ContentView.swift）から $ をつけて連絡シャトルを繋ぐ！
+LiquidGlassBar(selectTabs: $selectTabs)
+
+// 別棟（LiquidGlassBar.swift）で @Binding として受け取る！
+struct LiquidGlassBar: View {
+    @Binding var selectTabs: Todotab
+    ...
+}</code></pre>
+          <div class="side-cards">
+            <div class="bridge-box">
+              <h4>🔄 Flutterとのブリッジ</h4>
+              <p>別ファイルのWidgetに切り出してコールバック関数を渡す代わりに、SwiftUIでは <code>@Binding</code> ＋ <code>$</code> だけで親の状態を直接書き換えられるわ！</p>
+            </div>
+            <div class="vocab-box">
+              <h4>🌏 東京駅・道案内英語</h4>
+              <ul>
+                <li><strong>Connecting shuttle</strong>：連絡シャトル</li>
+                <li><strong>Terminal 1 / Terminal 2</strong>：第1・第2ターミナル</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FLIGHT 05 -->
+    <section id="flight-05" class="flight-card">
+      <div class="flight-header">
+        <div class="flight-title-group">
+          <span class="flight-num">FLIGHT 05</span>
+          <h2>ボーディングブリッジでVIPラウンジへ（NavigationLink ＆ 詳細画面）</h2>
+        </div>
+        <span class="git-pill">commit: 4083018</span>
+      </div>
+      <div class="flight-body">
+        <div class="visual-grid">
+          <div class="media-box">
+            <div class="media-label"><span>🖼️ 空港イメージ図</span><span>Boarding Bridge to VIP Lounge</span></div>
+            <img src="images/flight_05.jpg" alt="Flight 05 VIP Lounge" onclick="openModal(this.src)" />
+          </div>
+          <div class="media-box">
+            <div class="media-label"><span>📱 はやとの実機スクショ</span><span>FormとToggleの編集画面</span></div>
+            <div class="screen-row">
+              <img src="images/screen_05_detail_view.png" alt="TodoDetailView Screen" onclick="openModal(this.src)" />
+            </div>
+          </div>
+        </div>
+
+        <div class="analogy-box">
+          <h3>✈️ 羽田・成田でのたとえ：搭乗口からブリッジを渡ってVIPラウンジへ！</h3>
+          <p>
+            リストの行を <strong><code>NavigationLink</code></strong> という「搭乗ゲート」で包むと、タップした瞬間にボーディングブリッジを渡って<strong>「VIPラウンジ（<code>TodoDetailView</code>）」</strong>へ移動できる！
+            ラウンジ内の <code>Form</code> や <code>Toggle</code> でタイトル・完了ステータスを変更すると、<code>@Binding</code> 経由で本館のリストにも即座に反映されるわ！
+          </p>
+        </div>
+
+        <div class="info-grid">
+          <pre><code>// 本館リストの搭乗ゲート
+NavigationLink {
+    TodoDetailView(todo: $todo) // 行き先！
+} label: {
+    // リスト1行分の見た目
+}
+
+// VIPラウンジ（TodoDetailView.swift）
+Form {
+    Section("TODOs title") {
+        TextField("タイトルを編集", text: $todo.title)
+    }
+    Section("ステータス") {
+        Toggle("完了にする", isOn: $todo.isCompleted)
+    }
+}</code></pre>
+          <div class="side-cards">
+            <div class="bridge-box">
+              <h4>🔄 Flutterとのブリッジ</h4>
+              <p><code>Navigator.push(...)</code> ＋ <code>pop</code> で戻り値を返す手間はゼロ！<code>NavigationStack</code> ＋ <code>NavigationLink</code> だけで戻るボタンもスワイプ戻るも自動！</p>
+            </div>
+            <div class="vocab-box">
+              <h4>🌏 東京駅・道案内英語</h4>
+              <ul>
+                <li><strong>Boarding bridge</strong>：搭乗橋</li>
+                <li><strong>Transfer / Transit</strong>：乗り継ぎ</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FLIGHT 06 -->
+    <section id="flight-06" class="flight-card">
+      <div class="flight-header">
+        <div class="flight-title-group">
+          <span class="flight-num">FLIGHT 06</span>
+          <h2>国際線手荷物ルールと24時間コインロッカー（Codable ＆ UserDefaults）</h2>
+        </div>
+        <span class="git-pill">commit: feb208a (Latest!)</span>
+      </div>
+      <div class="flight-body">
+        <div class="visual-grid">
+          <div class="media-box">
+            <div class="media-label"><span>🖼️ 空港イメージ図</span><span>Baggage Packing & 24H Locker</span></div>
+            <img src="images/flight_06.jpg" alt="Flight 06 Baggage and Locker" onclick="openModal(this.src)" />
+          </div>
+          <div class="media-box">
+            <div class="media-label"><span>📱 はやとの実機スクショ</span><span>アプリ再起動後もデータ生存！</span></div>
+            <div class="screen-row">
+              <img src="images/screen_06_persisted.png" alt="Persisted Todos after restart" onclick="openModal(this.src)" />
+            </div>
+          </div>
+        </div>
+
+        <div class="analogy-box">
+          <h3>✈️ 羽田・成田でのたとえ：荷物の梱包（JSON化）＆ 地下コインロッカー！</h3>
+          <p>
+            アプリを終了してもデータが消えないのは、<strong><code>Codable</code></strong> でToDoを「飛行機に積める規定の段ボール（JSONデータ）」に梱包して、空港の<strong>「24時間地下コインロッカー（<code>UserDefaults</code>）」</strong>に預けているから！
+            起動時にロッカーから取り出す時は、<strong><code>if let</code>（保安検査のアンラップ）</strong>で「中身が空っぽ（<code>nil</code>）じゃないか」を安全にチェックしてから復元するのよ！
+          </p>
+        </div>
+
+        <div class="info-grid">
+          <pre><code>// 1. 梱包（JSONに変換）してロッカーにしまう
+private func saveTodos() {
+    if let encoded = try? JSONEncoder().encode(todos) {
+        UserDefaults.standard.set(encoded, forKey: saveKey)
+    }
+}
+
+// 2. 保安検査（if let でアンラップ）して取り出す
+private func loadTodos() {
+    if let data = UserDefaults.standard.data(forKey: saveKey),
+       let decoded = try? JSONDecoder().decode([ToDo].self, from: data) {
+        todos = decoded
+    }
+}</code></pre>
+          <div class="side-cards">
+            <div class="bridge-box">
+              <h4>🔄 Flutterとのブリッジ</h4>
+              <p><code>shared_preferences</code> ＋ <code>jsonEncode / jsonDecode</code> と全く同じ原理！ただしSwiftは <code>Codable</code> を1語書くだけで変換処理の自動生成までやってくれるわ！</p>
+            </div>
+            <div class="vocab-box">
+              <h4>🌏 東京駅・道案内英語</h4>
+              <ul>
+                <li><strong>Baggage claim</strong>：手荷物受取所</li>
+                <li><strong>Coin locker / Storage</strong>：コインロッカー・荷物預かり</li>
+                <li><strong>Security check</strong>：保安検査</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BONUS COLUMNS -->
+    <section id="columns" class="flight-card">
+      <div class="flight-header">
+        <div class="flight-title-group">
+          <span class="flight-num">BONUS</span>
+          <h2>空港おまけコラム：はやとが夜に聞いた神質問まとめ</h2>
+        </div>
+        <span class="git-pill">✈️ Lounge Q&A</span>
+      </div>
+      <div class="flight-body">
+        <div class="column-grid">
+          <div class="mini-column">
+            <h3>🪪 protocol vs struct 問題</h3>
+            <p>
+              <strong><code>protocol</code></strong>（例：<code>View</code>, <code>Identifiable</code>, <code>Codable</code>）は「パイロット免許や航空法のルールブック」。<br>
+              <strong><code>struct</code></strong>（例：<code>ContentView</code>, <code>ToDo</code>）は「そのルールを守って作られた本物の飛行機（実体）」！<br>
+              <code>var body</code> を <code>var bodu</code> とタイプミスすると「航空法違反よ！」と怒られるわ。
+            </p>
+          </div>
+          <div class="mini-column">
+            <h3>🛂 なぜ同じ空港内なら import 不要？</h3>
+            <p>
+              JavaやFlutterは部屋ごとに鍵がかかっていて毎回 <code>import</code> が必要だけど、Swiftは<strong>同じプロジェクト（同じ空港の敷地内）なら最初から全員顔パス（<code>internal</code>）</strong>！<br>
+              <code>import SwiftUI</code> だけは「Apple本社から外部機材を借りる手続き」だから書くのよ。
+            </p>
+          </div>
+          <div class="mini-column">
+            <h3>🔐 @State の private と関数の配置</h3>
+            <p>
+              <code>@State</code> は「管制塔の秘密ボタン」だから、他の画面に勝手に押されないよう <strong><code>private</code>（関係者以外立入禁止）</strong> にするのが鉄則！<br>
+              そしてコードは「変数 ➡️ <code>body</code>（見た目）➡️ <code>private func</code>（裏方処理）」の順に書くと、就活の面接官も一目で惚れる綺麗なコードになるわ！
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>✈️ SwiftUI_Study — Compiled by Karane for Hayato • Keep flying high!</p>
+  </footer>
+
+  <!-- Zoom Modal -->
+  <div id="imgModal" class="modal" onclick="closeModal()">
+    <img id="modalImg" src="" alt="Expanded View" />
+  </div>
+
+  <script>
+    function openModal(src) {
+      const modal = document.getElementById('imgModal');
+      const modalImg = document.getElementById('modalImg');
+      modalImg.src = src;
+      modal.classList.add('open');
+    }
+    function closeModal() {
+      document.getElementById('imgModal').classList.remove('open');
+    }
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+  </script>
+</body>
+</html>
